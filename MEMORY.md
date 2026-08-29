@@ -216,11 +216,17 @@ anytls 节点加 `client-metadata: clash.meta`（已验证 clash.meta / sing-box
 ## 修复（config.yaml，已真机验证）
 - `shared.interface: [wlan2, rndis0]`（热点 AP + USB 共享接口都挂 TC）
 - `bypass_rule_set: []`（CN 流量统一进 mihomo 由规则直连，uid 0 出站不受 netd 限制）
+- **`shared.advanced.data-plane: rewrite`（必配）**：socket_assign 数据面（默认）下
+  客户端（热点/USB 共享）CN 直连出站异常（google 等代理通、baidu 等直连断、
+  mihomo 日志 match 直连但无响应）；切 rewrite 后客户端直连立即恢复
+  （baidu 200@0.15s），手机本机直连不受影响（本机不走 shared 数据面）
 - 验证：热点 google 204@0.28s/baidu 200@0.24s；USB 共享 google 204/baidu 200；
   DNS hijack 解析正常；connections 客户端 IP 全部 type=EBPF
 - 诊断技巧：`--resolve` 绕过 DNS 区分 DNS/数据通路；清 bypass 单变量实验定位根因
 - 备份：手机 config.yaml.bak.rndis（修复前）；部署模板 deploy/box/mihomo/
   config.yaml 与 config.yaml.txt 已同步修复版
+- ⚠️ Windows adb 内联 sed 传 `[`/转义会因参数重组失效，改 config 必须用
+  拉取-本地改-推回方式（曾因此修复被静默回退）
 
 # 通用公共包打包（2026-08-29 完成）
 
