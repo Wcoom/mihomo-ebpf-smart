@@ -1,0 +1,17 @@
+# 源码仓库（内含自己的 .git）
+/repo/
+
+# 构建产物与大型二进制
+*.zip
+NUL
+deploy/box/bin/mihomo
+deploy/box/bin/mihomo.bak*
+deploy/box/mihomo/Model.bin
+repo/mihomo_android_arm64
+repo/dist/
+
+# 本地缓存
+*.db
+
+# 用户私密配置（含订阅 URL/节点信息，绝不入库）
+deploy/box/mihomo/config*.yaml*
